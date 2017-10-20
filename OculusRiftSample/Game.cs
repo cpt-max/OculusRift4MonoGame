@@ -30,6 +30,8 @@ namespace OculusRiftSample
         {
             // initialize the Rift
             int result = rift.Init(GraphicsDevice);
+            if(result != 0)
+                throw new InvalidOperationException("rift.Init result: " + result);
 
             base.Initialize();
         }
