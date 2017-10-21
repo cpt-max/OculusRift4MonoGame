@@ -23,6 +23,7 @@ namespace OculusRiftSample
 			gdm = new GraphicsDeviceManager(this);
 			gdm.PreferredBackBufferWidth = 800;
 			gdm.PreferredBackBufferHeight = 600;
+            gdm.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
         }
 
