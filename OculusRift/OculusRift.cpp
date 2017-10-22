@@ -197,27 +197,23 @@ extern "C"
 
 		tracking.StatusFlags = ts.StatusFlags;
 		 
-		if (ts.StatusFlags & (ovrStatus_OrientationTracked | ovrStatus_PositionTracked))
+		tracking.HeadPose = Matrix4f(ts.HeadPose.ThePose);
+
+		for (int eye = 0; eye < 2; eye++)
 		{
-			tracking.HeadPose = Matrix4f(ts.HeadPose.ThePose);
+			double sensorSampleTime;
+			ovrPosef eyePoses[2];
+			ovr_GetEyePoses(session, frame, ovrTrue, hmdToEyeOffet, eyePoses, &sensorSampleTime);
+			//ovr_CalcEyePoses(ts.HeadPose.ThePose, hmdToEyeOffet, eyePoses);
 
-			for (int eye = 0; eye < 2; eye++)
-			{
-				double sensorSampleTime;
-				ovrPosef eyePoses[2];
-				ovr_GetEyePoses(session, frame, ovrTrue, hmdToEyeOffet, eyePoses, &sensorSampleTime);
-				//ovr_CalcEyePoses(ts.HeadPose.ThePose, hmdToEyeOffet, eyePoses);
+			if (eye == 0)
+				tracking.EyePoseLeft = Matrix4f(eyePoses[0]);
+			else
+				tracking.EyePoseRight = Matrix4f(eyePoses[1]);
 
-				if (eye == 0)
-					tracking.EyePoseLeft = Matrix4f(eyePoses[0]);
-				else
-					tracking.EyePoseRight = Matrix4f(eyePoses[1]);
-
-				//layer.SensorSampleTime = sensorSampleTime;
-				layer.RenderPose[0] = eyePoses[0];
-				layer.RenderPose[1] = eyePoses[1];
-				
-			}
+			//layer.SensorSampleTime = sensorSampleTime;
+			layer.RenderPose[0] = eyePoses[0];
+			layer.RenderPose[1] = eyePoses[1];
 		}
 
 		return tracking;
