@@ -6,8 +6,6 @@
 #include "d3d11.h"
 #include "vector"
 
-#pragma comment(lib, "LibOVR/Lib/LibOVR.lib")
-
 using namespace OVR;
 
 
@@ -50,7 +48,7 @@ ovrTextureSwapChain texSwapChain[2];
 std::vector<ID3D11RenderTargetView*> renderTargetViews[2];
 
 ovrEyeRenderDesc eyeRenderDesc[2];
-ovrVector3f hmdToEyeOffet[2];
+ovrPosef hmdToEyePose[2];
 
 ovrLayerEyeFov layer;
 
@@ -171,7 +169,7 @@ extern "C"
 	
 			eyeRenderDesc[eye] = ovr_GetRenderDesc(session, (ovrEyeType)eye, fov);
 
-			hmdToEyeOffet[eye] = eyeRenderDesc[eye].HmdToEyeOffset;
+			hmdToEyePose[eye] = eyeRenderDesc[eye].HmdToEyePose;
 
 			layer.Header.Type = ovrLayerType_EyeFov;
 			layer.Header.Flags = 0;
@@ -203,8 +201,8 @@ extern "C"
 		{
 			double sensorSampleTime;
 			ovrPosef eyePoses[2];
-			ovr_GetEyePoses(session, frame, ovrTrue, hmdToEyeOffet, eyePoses, &sensorSampleTime);
-			//ovr_CalcEyePoses(ts.HeadPose.ThePose, hmdToEyeOffet, eyePoses);
+			ovr_GetEyePoses(session, frame, ovrTrue, hmdToEyePose, eyePoses, &sensorSampleTime);
+			//ovr_CalcEyePoses(ts.HeadPose.ThePose, hmdToEyePose, eyePoses);
 
 			if (eye == 0)
 				tracking.EyePoseLeft = Matrix4f(eyePoses[0]);
