@@ -18,15 +18,15 @@ namespace OculusRiftSample
             effect = new BasicEffect(gd);
             effect.EnableDefaultLighting();
 
-            //DepthStencilState..DepthBufferEnable = true;
-            //DepthStencilState.Default.DepthBufferWriteEnable = true;
-            gd.DepthStencilState = DepthStencilState.DepthRead;
             vertexBuffer = new VertexBuffer(gd, VertexPositionNormalTexture.VertexDeclaration, 36, BufferUsage.WriteOnly);
             vertexBuffer.SetData(BuildCubeVertices());
         }
 
         public void Draw(Matrix view, Matrix projection)
         {
+            gd.BlendState = BlendState.Opaque;
+            gd.DepthStencilState = DepthStencilState.Default;
+
             effect.View = view;
             effect.Projection = projection;
 
