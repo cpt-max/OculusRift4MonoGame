@@ -10,11 +10,16 @@ namespace Microsoft.Xna.Framework.Graphics
             var graphicsDeviceType = typeof(GraphicsDevice);
 
             var d3dDeviceInfo  = graphicsDeviceType.GetField("_d3dDevice", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var device = d3dDeviceInfo.GetValue(graphicsDevice) as SharpDX.Direct3D11.Device;
-            dxDevicePtr = device.NativePointer;
+            var deviceObj = d3dDeviceInfo.GetValue(graphicsDevice);
+            var deviceType = deviceObj.GetType();
+            var devicePtrInfo = deviceType.GetProperty("NativePointer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            dxDevicePtr =  (IntPtr)devicePtrInfo.GetValue(deviceObj);
+
             var d3dContextInfo = graphicsDeviceType.GetField("_d3dContext", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var context = d3dContextInfo.GetValue(graphicsDevice) as SharpDX.Direct3D11.DeviceContext;
-            dxContextPtr = context.NativePointer;
+            var contextObj = d3dContextInfo.GetValue(graphicsDevice);
+            var contextType = contextObj.GetType();
+            var contextPtrInfo = contextType.GetProperty("NativePointer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            dxContextPtr =  (IntPtr)contextPtrInfo.GetValue(contextObj);
         }
 
         public static IntPtr GetNativeDxResource(this RenderTarget2D renderTarget2D)
@@ -22,8 +27,10 @@ namespace Microsoft.Xna.Framework.Graphics
             var renderTarget2DType = typeof(RenderTarget2D);
 
             var textureInfo = renderTarget2DType.GetField("_texture", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var resource = textureInfo.GetValue(renderTarget2D) as SharpDX.Direct3D11.Resource;
-            return resource.NativePointer;
+            var resourceObj = textureInfo.GetValue(renderTarget2D);
+            var resourceType = resourceObj.GetType();
+            var resourcePtrInfo = resourceType.GetProperty("NativePointer", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            return (IntPtr)resourcePtrInfo.GetValue(resourceObj);
         }
     }
 }
