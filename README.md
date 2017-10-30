@@ -5,7 +5,7 @@
   It's based on the Oculus SDK. 
 
 - The OculusRiftSample folder contains a MonoGame sample project that PInvokes into OculusRift.dll  
-  In order to compile this, you first need to fix up the broken references to MonoGame and SharpDX. 
+  In order to compile this, you first need to fix up the broken reference to MonoGame. 
 
 - The OculusRiftSample_prebuilt folder contains the prebuilt binary version of the OculusRiftSample.
   If everything goes well you'll find yourself surrounded by pyramids. Use the mouse to move around.
